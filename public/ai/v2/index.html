@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIと対話する V2</title>
+  <link rel="stylesheet" href="/ai/v2/style.css">
+</head>
+<body>
+  <div class="v2">
+    <nav class="v2-nav">
+      <a href="/">TOP</a>
+      <a href="/todo">TODO</a>
+      <a href="/ai">AI質問（V1）</a>
+    </nav>
+    <h1>AIと対話する <span class="v2-badge">V2</span></h1>
+
+    <p id="v2-error" class="v2-error" role="alert" hidden></p>
+
+    <div class="v2-layout">
+      <aside class="v2-sidebar" aria-labelledby="v2-conv-title">
+        <h2 id="v2-conv-title">会話</h2>
+        <form id="v2-new-form" class="v2-new-form" novalidate>
+          <label for="v2-new-title" class="v2-visually-hidden">新しい会話の名前</label>
+          <input type="text" id="v2-new-title" placeholder="新しい会話の名前（50文字まで）" autocomplete="off" disabled>
+          <button type="submit" id="v2-new-submit" disabled>作成</button>
+        </form>
+        <p id="v2-conv-empty" class="v2-muted" hidden>会話がありません。新しい会話を作成してください。</p>
+        <ul id="v2-conv-list" class="v2-conv-list"></ul>
+      </aside>
+
+      <main class="v2-main">
+        <h2 id="v2-current-title" class="v2-current-title">会話を選択してください</h2>
+        <p id="v2-turns-empty" class="v2-muted" hidden>まだやり取りがありません。</p>
+        <ol id="v2-turn-list" class="v2-turn-list"></ol>
+
+        <form id="v2-ask-form" class="v2-ask-form" novalidate>
+          <label for="v2-prompt" class="v2-visually-hidden">質問</label>
+          <textarea id="v2-prompt" rows="3" placeholder="この会話で質問する（2000文字まで）" disabled></textarea>
+          <div class="v2-ask-footer">
+            <span id="v2-counter" class="v2-muted">0 / 2000</span>
+            <button type="submit" id="v2-ask-submit" disabled>送信</button>
+          </div>
+        </form>
+        <p id="v2-status" class="v2-status" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+
+    <p class="v2-note">※ 授業用のデモです。架空の内容だけを入力してください。会話はこの画面を見られる人に表示されます。</p>
+  </div>
+
+  <script src="/ai/v2/app.js"></script>
+</body>
+</html>
