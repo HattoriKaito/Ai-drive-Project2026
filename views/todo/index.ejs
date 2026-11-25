@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TODOアプリ</title>
+  <link rel="stylesheet" href="/todo/todo.css">
+</head>
+<body>
+  <main class="todo">
+    <h1>TODOアプリ</h1>
+
+    <form id="todo-form" class="todo-form" novalidate>
+      <label for="todo-title" class="visually-hidden">TODOのタイトル</label>
+      <input type="text" id="todo-title" name="title" placeholder="やることを入力（100文字まで）" autocomplete="off">
+      <button type="submit" id="todo-submit">登録</button>
+    </form>
+
+    <p id="todo-status" class="todo-status" role="status" aria-live="polite"></p>
+    <p id="todo-error" class="todo-error" role="alert" hidden></p>
+    <p id="todo-empty" class="todo-empty" hidden>TODOがありません</p>
+
+    <ul id="todo-list" class="todo-list"></ul>
+
+    <p class="todo-note">※ 授業用の公開ページです。個人情報は入力しないでください。</p>
+  </main>
+
+  <script src="/todo/todo.js"></script>
+</body>
+</html>
