@@ -20,3 +20,4 @@
 ## 進捗メモ
 - 2026-11-25 TASK-01：aiError.ts（固定コードと文言、限定ログ）、aiMiddleware.ts（問い合わせID、デモ停止）、aiRouter.ts（デモ停止→16KiBのJSON解析→ルート→404→エラー処理）を作成し、index.ts に /api/ai を登録。DB なしの検証環境で、AI_DEMO_ENABLED 未設定時に GET・POST とも 503 DEMO_DISABLED、/ と /todo は 200。true 時は不正 JSON 400、17,000 バイトで 413、未定義 URL 404、X-Request-Id の付与を確認
 - 2026-11-25 TASK-02：sql/ai/030 を Neon で実行（sql/README.md に記録）。aiModel.ts（最新20件、列名変換）、aiController.ts（getHistory、DB障害は503 DB_UNAVAILABLE）を作成し Router に登録。DB なしの検証環境で 503 DB_UNAVAILABLE と、ログに requestId・段階・エラー種別だけが出ることを確認
+- 2026-11-25 TASK-03：aiService.ts に模擬回答（ローカル限定、Vercel 上では AI_NOT_CONFIGURED）、aiModel.ts に saveLog、aiController.ts に askAi（検証→回答→保存→201）を実装。DB なしの検証環境で、空白・型違い・prompt なしは 400 INVALID_PROMPT、2,001 文字は 400 PROMPT_TOO_LONG、text/plain は 415、2,000 文字は検証を通過、模擬回答取得後の保存失敗は 500 SAVE_FAILED（回答を返さない）を確認

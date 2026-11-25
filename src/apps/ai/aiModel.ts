@@ -35,3 +35,12 @@ export async function listRecentLogs(): Promise<AiQaLog[]> {
   );
   return result.rows.map(toAiQaLog);
 }
+
+// 質問と回答を1行保存し、保存した内容を返す
+export async function saveLog(prompt: string, response: string): Promise<AiQaLog> {
+  const result = await pool.query<AiQaLogRow>(
+    `INSERT INTO ai_qa_logs (prompt, response_text) VALUES ($1, $2) RETURNING ${COLUMNS}`,
+    [prompt, response]
+  );
+  return toAiQaLog(result.rows[0]);
+}

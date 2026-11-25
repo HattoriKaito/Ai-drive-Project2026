@@ -1,7 +1,7 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { assignRequestId, requireDemoEnabled } from './aiMiddleware';
 import { AiPublicError, sendAiError, logAiError } from './aiError';
-import { getHistory } from './aiController';
+import { getHistory, askAi } from './aiController';
 
 export const aiRouter = Router();
 
@@ -12,9 +12,7 @@ aiRouter.use(express.json({ limit: 16384, type: 'application/json' }));
 
 // 4. ルート
 aiRouter.get('/history', getHistory); // 履歴（最新20件）
-aiRouter.post('/ask', (_req: Request, res: Response) => {
-  res.status(501).json({ success: false, error: { code: 'NOT_IMPLEMENTED', message: '未実装です（TASK-03で実装）', requestId: res.locals.requestId } });
-});
+aiRouter.post('/ask', askAi);         // 質問（検証→回答→保存→201）
 
 // 5. /api/ai 配下の未定義URL・メソッド
 aiRouter.use((_req: Request, res: Response) => {
