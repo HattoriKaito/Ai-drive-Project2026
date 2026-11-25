@@ -36,3 +36,13 @@
 | キー・モデル未設定 | 503 AI_NOT_CONFIGURED | 期待どおり | 合格 |
 | Gemini に通信できない | 再試行せず 502 AI_UNAVAILABLE | 0.1 秒で 502 | 合格 |
 | ログの内容 | requestId・段階・エラー種別のみ | 質問本文・キー・接続文字列なし | 合格 |
+
+## 公開環境（TASK-08）
+
+| 環境 | URL | AI_DEMO_ENABLED | 確認 | 結果 | 判定 |
+| --- | --- | --- | --- | --- | --- |
+| Preview | https://ai-drive-project2026-qjttwneph-kaitos-projects-7f072cea.vercel.app | false（All Environments） | /api/ai/history、/ai、/ | history は 503 DEMO_DISABLED。/ai は「現在AI機能は停止中です。」と問い合わせ ID を表示し、質問欄・送信ボタンは無効。/ は Hello World! と各アプリへのリンク | 合格（停止を確認） |
+| Production | https://ai-drive-project2026-tau-ochre.vercel.app | false（All Environments） | マージ後に /api/ai/history、/api/ai/ask、/、/todo | 未実施 | 未実施 |
+
+- Vercel には GEMINI_API_KEY を登録していない（どの公開環境でも AI を実行しないため）
+- Preview はアクセス保護を外しているため、AI を有効にしない。AI の実行デモはローカルで行う
