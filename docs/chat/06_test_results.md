@@ -23,7 +23,7 @@
 | TST-CHAT-014 | Local 2 台 | 2 台合計 4 席（3000 に 2、3001 に 2）の状態で両台から同時に入室し、3000 は成功、3001 は ROOM_FULL | 合格 | Console の出力。直前の chat_room_seats は 2 台に 2 席ずつ（合計 4） |
 | TST-CHAT-015 | ― | 未実施 | 未実施 | サーバーを強制終了して 60 秒待つ操作が必要 |
 | TST-CHAT-016 | ― | 未実施 | 未実施 | |
-| TST-CHAT-017 | 検証環境 | /・/todo・/ai・/ai/v2 は 200、存在しない URL は 404 | 合格（検証環境） | Local での確認は未実施 |
+| TST-CHAT-017 | 検証環境、Production | /・/todo・/ai・/ai/v2 は 200、存在しない URL は 404（検証環境）。Production でも同様（公開環境の表を参照） | 合格 | Local での確認は未実施 |
 
 ## 補足
 - 1 回目の同時入室テストでは 2 件とも成功した。chat_room_seats を確認すると合計 4 席で、実行前の参加者が 2 人だったため（定員内）と判断した。4 席の状態から同じ手順をやり直して上記の結果を得た
@@ -36,3 +36,5 @@
 | /chat の入室と履歴 | Preview（https://ai-drive-project2026-5nm448vgj-kaitos-projects-7f072cea.vercel.app/chat） | 「入室済み」になり履歴を表示 | 合格 | 内蔵ブラウザでの確認（Claude が実施） |
 | 2 タブの双方向送受信 | Preview | タブ 1 → タブ 2、タブ 2 → タブ 1 とも相手側に届き、送信側も 1 件だけ表示 | 合格 | 同上 |
 | 通信方式 | Preview | WebSocket に切り替わらず HTTP long-polling で通信（/socket.io/?transport=polling） | 記録 | Resource Timing。Vercel では polling で動作。接続が別インスタンスに振り分けられると切断・再接続が起こり得る（設計書 6.5） |
+| /chat の入室と履歴 | Production（https://ai-drive-project2026-tau-ochre.vercel.app/chat、PR #5 マージ後） | 「入室済み」になり履歴を表示 | 合格 | 内蔵ブラウザでの確認（Claude が実施） |
+| 既存機能の回帰（TST-CHAT-017） | Production | /・/todo・/todo-v2・/ai・/ai/v2・/api/db-check・/api/v1/todos が 200、/api/ai/history は停止どおり 503、存在しない URL は 404 | 合格 | 同上 |
