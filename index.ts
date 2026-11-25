@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import { pool } from './db'; // DB設定を読み込み
 import { todoRouter } from './src/apps/todo/todoRouter'; // TODO API
+import { todoV2Router } from './src/apps/todo/v2/todoV2Router'; // TODO API V2
 
 const app = express(); // Expressアプリケーションを作成
 const port: number = 3000; // ローカルで使用するポート番号
@@ -43,6 +44,14 @@ app.get('/todo', (_req: Request, res: Response): void => {
 
 // TODO API（/api/v1/todos）
 app.use('/api/v1/todos', todoRouter);
+
+// TODO V2画面（/todo-v2）
+app.get('/todo-v2', (_req: Request, res: Response): void => {
+  res.render('todo-v2/index');
+});
+
+// TODO API V2（/api/v2/todos）
+app.use('/api/v2/todos', todoV2Router);
 
 // ------------------------------
 // サーバー起動
