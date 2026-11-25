@@ -49,3 +49,4 @@
 
 ## 進捗メモ
 - 2026-11-25 A〜D のコードを作成（chatValidation・chatModel・chatService・chatController・chatRouter、views/chat/index.ejs、public/chat/chat.js・chat.css、index.ts の起動処理）。DB なしの検証環境で、/chat・/chat/・静的ファイル・/socket.io/socket.io.js が 200、既存の /・/todo・/ai・/ai/v2 が 200、存在しない URL が 404。未入室の chat:send は NOT_JOINED、DB に接続できない入室は DB_UNAVAILABLE（サーバーは停止しない）
+- 2026-11-25 E：2 台（3000・3001）で双方向の配信と、合計 4 席からの同時入室で成功 1 件・ROOM_FULL 1 件を確認。docs/chat/05・06 を作成
