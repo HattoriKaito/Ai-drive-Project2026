@@ -131,3 +131,6 @@
 
 ## 進捗メモ
 （作業単位が終わるたびに、変更したファイルと確認結果を追記する）
+- 2026-11-25 工程1〜2：020 SQL と sql/README.md を作成。Neon（patient-recipe-90853169 / production / neondb）で実行し、0 件を確認
+- 2026-11-25 工程3〜6：src/apps/todo/（todoRouter.ts、todoController.ts、todoModel.ts）を作成し、index.ts に todoRouter を登録。ローカルの Console で POST 201 → GET 200（1 件）→ PATCH 200（isCompleted: true）→ DELETE 204 → 再 DELETE 404 を確認。400（不正 JSON・title 欠落・型違い・不正 ID）、422（空白・101 文字）も確認
+- 2026-11-25 工程7〜8：public/todo/todo.js（TodoApi と画面イベント）、public/todo/todo.css、views/todo/index.ejs を作成し、index.ts に /todo を追加。/todo が /todo/ へリダイレクトされる問題を express.static の redirect: false で解消

@@ -176,6 +176,7 @@ GET /todo → index.ts → views/todo/index.ejs を返す
 
 ## 8 実装への注意事項
 - index.ts の追記は import 1 行とルート 2 行に留める
+- 画面 URL /todo と public/todo/ フォルダーの名前が重なり、express.static が /todo/ へリダイレクトしてしまう。既存の express.static に `{ redirect: false }` を追加して回避する
 - app.use('/api/v1/todos', todoRouter) は既存ルートと URL が重ならないことを確認する
 - テスト用の ID をソースコードに固定しない
 - 公開 URL は認証なしで誰でも操作できるため、個人情報や重要データを登録しない
