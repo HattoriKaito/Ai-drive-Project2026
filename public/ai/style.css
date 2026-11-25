@@ -1,0 +1,98 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  background: #f5f6f8;
+  color: #1f2328;
+  line-height: 1.6;
+}
+
+.ai {
+  max-width: 720px;
+  margin: 32px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.ai-nav { display: flex; gap: 16px; font-size: 0.9rem; }
+.ai-nav a { color: #2563eb; }
+
+.ai h1 { margin: 12px 0 16px; font-size: 1.5rem; }
+.ai h2 { margin: 24px 0 8px; font-size: 1.1rem; }
+
+.ai-form label { display: block; font-weight: 600; margin-bottom: 6px; }
+
+.ai-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.ai-form textarea:disabled { background: #f6f8fa; }
+
+.ai-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ai-counter { color: #57606a; font-size: 0.85rem; }
+.ai-counter.is-over { color: #b42318; font-weight: 600; }
+
+.ai-form button {
+  padding: 8px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ai-form button:disabled { opacity: 0.6; cursor: default; }
+
+.ai-status { min-height: 1.4em; margin: 12px 0 0; color: #57606a; font-size: 0.9rem; }
+
+.ai-error {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  background: #fdecec;
+  color: #b42318;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.ai-empty { color: #57606a; }
+
+.ai-list { list-style: none; margin: 0; padding: 0; }
+
+.ai-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #eaeef2;
+}
+
+.ai-item-label { font-size: 0.8rem; font-weight: 600; color: #57606a; }
+
+.ai-item-prompt,
+.ai-item-response {
+  margin: 2px 0 8px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ai-item-response {
+  padding: 8px 12px;
+  background: #f6f8fa;
+  border-radius: 8px;
+}
+
+.ai-item-time { font-size: 0.8rem; color: #8c959f; }
+
+.ai-note { margin: 20px 0 0; color: #8c959f; font-size: 0.8rem; }

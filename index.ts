@@ -3,6 +3,7 @@ import path from 'path';
 import { pool } from './db'; // DB設定を読み込み
 import { todoRouter } from './src/apps/todo/todoRouter'; // TODO API
 import { todoV2Router } from './src/apps/todo/v2/todoV2Router'; // TODO API V2
+import { aiRouter } from './src/apps/ai/aiRouter'; // AI質問API
 
 const app = express(); // Expressアプリケーションを作成
 const port: number = 3000; // ローカルで使用するポート番号
@@ -20,7 +21,8 @@ app.set('views', path.join(process.cwd(), 'views')); // EJSファイルを保存
 // ------------------------------
 // 「/」にアクセスされたときの処理
 app.get('/', (req: Request, res: Response): void => {
-  res.send('Hello World!');
+  // 既存の「Hello World!」表示は残し、各アプリへのリンクを追加
+  res.send('Hello World!<p><a href="/todo">TODO</a> | <a href="/todo-v2">TODO V2</a> | <a href="/ai">AIに質問する</a></p>');
 });
 
 // DB接続確認
@@ -52,6 +54,14 @@ app.get('/todo-v2', (_req: Request, res: Response): void => {
 
 // TODO API V2（/api/v2/todos）
 app.use('/api/v2/todos', todoV2Router);
+
+// AI質問画面（/ai）
+app.get(['/ai', '/ai/'], (_req: Request, res: Response): void => {
+  res.sendFile(path.join(process.cwd(), 'public', 'ai', 'index.html'));
+});
+
+// AI質問API（/api/ai）
+app.use('/api/ai', aiRouter);
 
 // ------------------------------
 // サーバー起動
