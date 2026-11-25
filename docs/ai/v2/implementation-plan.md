@@ -8,7 +8,7 @@
 | TASK-V2-01 | REQ-V2-06／DES-V2-05 | V1 の /ai、/api/ai | V1 で実際の回答・201・履歴保存を確認し、`git switch -c feature/ai-app-v2` | V1 正常、ブランチ作成 | V1 の動作を記録済み | V1 は docs/ai/test-results.md の T01 で確認済み（2026-11-25） | |
 | TASK-V2-02 | REQ-V2-01・02／DES-V2-02・03・05 | sql/ai/040_create_ai_conversations.sql、src/apps/ai/v2/（Router・Controller・Model・Error）、index.ts | SQL を Neon で実行。会話 A・B を作成、一覧と各会話の空の履歴を取得 | 201×2、一覧 200 で 2 件、各 turns 200・[]、存在しない ID 404、不正 ID 400 | A・B の会話 ID を記録できた | A（ID 1）・B（ID 2）を 201 で作成、一覧 200 で 2 件（新しい順）、各 turns 200・[]、ID 999999 は 404 CONVERSATION_NOT_FOUND、空白の会話名は 400 INVALID_TITLE | 合格 |
 | TASK-V2-03 | REQ-V2-03〜05／DES-V2-03・04 | src/apps/ai/v2/aiV2Service.ts、Controller、Model | A で合言葉を伝え、A で追加質問。B で同じ追加質問 | A の 2 回目のログが user,model,user、B の初回が user。A は合言葉に答え、B は答えられない。201 と保存 | 送信内容と保存が一致 | A 1 回目・2 回目・B 初回とも 201。A の 2 回目は「しろくま47」と回答、B は「初めての会話なので合言葉は決めていない」と回答。ログの roles は A：user → user,model,user、B：user | 合格 |
-| TASK-V2-04 | REQ-V2-01・02・05／DES-V2-01 | public/ai/v2/、index.ts | 画面で A → B → A の切り替え、再読み込み後の再開、失敗時の入力保持 | 会話ごとの履歴、再開、入力保持と操作復帰 | すべて確認 | A → B → A で各会話の履歴だけを表示。再読み込み後 #c=1 で A が開き追加質問できた。会話 C の作成で一覧の先頭に追加・自動選択・0 件表示。オフライン送信で案内表示・質問保持・操作復帰 | 合格 |
+| TASK-V2-04 | REQ-V2-01・02・05／DES-V2-01 | public/ai/v2/、index.ts | 画面で A → B → A の切り替え、再読み込み後の再開、失敗時の入力保持 | 会話ごとの履歴、再開、入力保持と操作復帰 | すべて確認 | A → B → A で各会話の履歴だけを表示（URL は #c=1／#c=2）。A を選んだ状態で再読み込みすると A が開き、追加質問が A の続きとして回答された。会話 C の作成で一覧の先頭に追加・自動選択・「まだやり取りがありません」。オフライン送信で案内表示・質問保持・操作復帰 | 合格 |
 | TASK-V2-05 | REQ-V2-01〜06／DES-V2-01〜05 | docs/ai/v2/test-results.md | 下のテストを実施。PR に結果を記載 | 下表のとおり | 記録と提出 | | |
 
 ## テスト（docs/ai/v2/test-results.md に記録）
