@@ -9,9 +9,10 @@
 | TODO V2（優先度・絞り込み） | /todo-v2 | /api/v2/todos |
 | AI 質問アプリ | /ai | /api/ai/ask、/api/ai/history |
 | AI 対話アプリ V2（会話の文脈・切り替え） | /ai/v2 | /api/ai/v2/conversations、/api/ai/v2/conversations/:id/turns |
+| リアルタイムチャット | /chat | Socket.IO（chat:join、chat:send、chat:message） |
 
 - 本番：https://ai-drive-project2026-tau-ochre.vercel.app
-- 文書：docs/todo/（TODO V1）、docs/todo/v2/（TODO V2）、docs/ai/（AI 質問アプリ）、docs/ai/v2/（AI 対話アプリ V2）
+- 文書：docs/todo/（TODO V1）、docs/todo/v2/（TODO V2）、docs/ai/（AI 質問アプリ）、docs/ai/v2/（AI 対話アプリ V2）、docs/chat/（リアルタイムチャット）
 - SQL：sql/（実行記録は sql/README.md）
 
 ## 起動方法
@@ -78,3 +79,16 @@ docs/ai/test-results.md に記録しています。必須確認のうち、画�
 - テーブル：ai_conversations、ai_conversation_turns（sql/ai/040_create_ai_conversations.sql）
 - 公開停止は V1 と同じ AI_DEMO_ENABLED。Preview・Production では V2 の全 API が 503 DEMO_DISABLED です。評価はローカルで行います
 - テスト結果：docs/ai/v2/test-results.md
+
+## リアルタイムチャット
+
+/chat で利用者同士がリアルタイムに会話できます（AI の応答はありません）。
+
+- 流れ：ブラウザが Socket.IO で接続 → chat:join で入室（席の確保）→ 最新 20 件を古い順に表示 → chat:send で投稿 → サーバーが検証・保存 → 保存できた投稿だけを同じルームへ chat:message で配信
+- 定員：1 ルーム 5 接続（タブごとに 1 人）。席は DB（chat_room_seats）で数え、ルーム単位のロックで確保するため、サーバーが複数台でも合計 5 人を超えません。切断で解放し、更新が 60 秒止まった席は回収します
+- 複数台の新着：各サーバーが 2 秒ごとに DB の新着を確認して配信します（Redis は使用しない）
+- 再接続：切断中は送信できず、再接続すると自動で入室し、最新 20 件を取り直します。履歴と新着は投稿 ID でまとめて二重表示を防ぎます
+- 入力：ユーザー名 1〜20 文字、コメント 1〜500 文字（前後の空白を除く）。表示は textContent
+- SQL：sql/chat/040_create_chat_messages.sql
+- 2 台での確認：`npm run dev`（3000）と、別のターミナルで `$env:PORT=3001; npm run dev`（PowerShell）
+- 文書：docs/chat/01〜06

@@ -1,3 +1,4 @@
+import http from 'http';
 import express, { Request, Response } from 'express';
 import path from 'path';
 import { pool } from './db'; // DB設定を読み込み
@@ -5,6 +6,8 @@ import { todoRouter } from './src/apps/todo/todoRouter'; // TODO API
 import { todoV2Router } from './src/apps/todo/v2/todoV2Router'; // TODO API V2
 import { aiRouter } from './src/apps/ai/aiRouter'; // AI質問API
 import { aiV2Router } from './src/apps/ai/v2/aiV2Router'; // AI対話API V2
+import { chatRouter } from './src/apps/chat/chatRouter'; // チャット画面
+import { initChat } from './src/apps/chat/chatService'; // チャット（Socket.IO）
 
 const app = express(); // Expressアプリケーションを作成
 const port: number = 3000; // ローカルで使用するポート番号
@@ -23,7 +26,7 @@ app.set('views', path.join(process.cwd(), 'views')); // EJSファイルを保存
 // 「/」にアクセスされたときの処理
 app.get('/', (req: Request, res: Response): void => {
   // 既存の「Hello World!」表示は残し、各アプリへのリンクを追加
-  res.send('Hello World!<p><a href="/todo">TODO</a> | <a href="/todo-v2">TODO V2</a> | <a href="/ai">AIに質問する</a> | <a href="/ai/v2">AIと対話する V2</a></p>');
+  res.send('Hello World!<p><a href="/todo">TODO</a> | <a href="/todo-v2">TODO V2</a> | <a href="/ai">AIに質問する</a> | <a href="/ai/v2">AIと対話する V2</a> | <a href="/chat">チャット</a></p>');
 });
 
 // DB接続確認
@@ -61,6 +64,9 @@ app.get(['/ai', '/ai/'], (_req: Request, res: Response): void => {
   res.sendFile(path.join(process.cwd(), 'public', 'ai', 'index.html'));
 });
 
+// チャット画面（/chat）
+app.use(chatRouter);
+
 // AI対話画面 V2（/ai/v2）
 app.get(['/ai/v2', '/ai/v2/'], (_req: Request, res: Response): void => {
   res.sendFile(path.join(process.cwd(), 'public', 'ai', 'v2', 'index.html'));
@@ -75,6 +81,11 @@ app.use('/api/ai', aiRouter);
 // ------------------------------
 // サーバー起動
 // ------------------------------
-app.listen(port, (): void => {
-  console.log(`Server started: http://localhost:${port}`);
+// Socket.IOを同じHTTPサーバーに組み込む（同じポートで二重に待機しない）
+const httpServer = http.createServer(app);
+initChat(httpServer);
+
+const listenPort: number = Number(process.env.PORT) || port; // 2台での確認用にPORTで変更可能
+httpServer.listen(listenPort, (): void => {
+  console.log(`Server started: http://localhost:${listenPort}`);
 });

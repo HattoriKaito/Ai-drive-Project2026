@@ -8,3 +8,4 @@ SQL ファイルは Git に保存するだけでは実行されない。Neon SQL
 | todo/021_create_todo_tasks_v2.sql | patient-recipe-90853169 / production（Primary） / neondb | 2026-11-25 | 成功。v2_todo_tasks は 0 件。V1 の todo_tasks はテーブルが残っていることを確認（テストで作成した行は削除済みのため 0 件） |
 | ai/030_create_ai_qa_logs.sql | patient-recipe-90853169 / production（Primary） / neondb | 2026-11-25 | 成功（CREATE TABLE・CREATE INDEX）。実行前の SELECT でテーブル未作成を確認後、作成 |
 | ai/040_create_ai_conversations.sql | patient-recipe-90853169 / production（Primary） / neondb | 2026-11-25 | 成功（CREATE 3 件：ai_conversations、ai_conversation_turns、インデックス） |
+| chat/040_create_chat_messages.sql | patient-recipe-90853169 / production（Primary） / neondb | 2026-11-25 | 成功（chat_messages・chat_room_seats とインデックス。/chat での保存・履歴表示で確認） |
