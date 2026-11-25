@@ -8,9 +8,10 @@
 | TODO V1 | /todo | /api/v1/todos |
 | TODO V2（優先度・絞り込み） | /todo-v2 | /api/v2/todos |
 | AI 質問アプリ | /ai | /api/ai/ask、/api/ai/history |
+| AI 対話アプリ V2（会話の文脈・切り替え） | /ai/v2 | /api/ai/v2/conversations、/api/ai/v2/conversations/:id/turns |
 
 - 本番：https://ai-drive-project2026-tau-ochre.vercel.app
-- 文書：docs/todo/（TODO V1）、docs/todo/v2/（TODO V2）、docs/ai/（AI 質問アプリ）
+- 文書：docs/todo/（TODO V1）、docs/todo/v2/（TODO V2）、docs/ai/（AI 質問アプリ）、docs/ai/v2/（AI 対話アプリ V2）
 - SQL：sql/（実行記録は sql/README.md）
 
 ## 起動方法
@@ -67,3 +68,13 @@ Neon の SQL Editor で sql/ai/030_create_ai_qa_logs.sql を実行します。
 
 ### テスト
 docs/ai/test-results.md に記録しています。必須確認のうち、画面での履歴 0 件表示（既存データを削除しないため）が未実施です。Production では AI が停止（503 DEMO_DISABLED）し、TOP・TODO が動くことを確認済みです。
+
+## AI 対話アプリ V2
+
+話題ごとに会話を作成・切り替えでき、同じ会話の前のやり取りを踏まえて追加質問できます。再読み込み後も URL の #c=会話ID から会話を再開できます。
+
+- 質問のたびに、サーバーが同じ会話の保存済み最新 5 往復を DB から読み、user（質問）→ model（回答）の順に並べ、今回の質問を最後に加えて Gemini に送ります。別の会話の履歴は SQL の会話 ID の条件で除外されます
+- 画面には選択中の会話の最新 20 往復を古い順に表示します
+- テーブル：ai_conversations、ai_conversation_turns（sql/ai/040_create_ai_conversations.sql）
+- 公開停止は V1 と同じ AI_DEMO_ENABLED。Preview・Production では V2 の全 API が 503 DEMO_DISABLED です。評価はローカルで行います
+- テスト結果：docs/ai/v2/test-results.md
