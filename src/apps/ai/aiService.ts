@@ -36,9 +36,13 @@ export async function generateAnswer(prompt: string): Promise<string> {
     });
 
     const text = response.text;
-    // 空回答（安全フィルター等で本文なしを含む）は失敗とし、保存しない
+    // 空回答（安全フィルター・出力上限などで本文なしを含む）は失敗とし、保存しない
     if (typeof text !== 'string' || text.trim().length === 0) {
-      throw new AiPublicError('AI_UNAVAILABLE');
+      // ログ用に終了理由（STOP・MAX_TOKENS・SAFETY など）だけを残す。本文は残さない
+      const finishReason = response.candidates?.[0]?.finishReason;
+      throw new AiPublicError('AI_UNAVAILABLE', {
+        cause: { name: 'EmptyResponse', code: typeof finishReason === 'string' ? finishReason : 'UNKNOWN' },
+      });
     }
     return text;
   } catch (error) {
