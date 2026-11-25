@@ -21,7 +21,8 @@ app.set('views', path.join(process.cwd(), 'views')); // EJSファイルを保存
 // ------------------------------
 // 「/」にアクセスされたときの処理
 app.get('/', (req: Request, res: Response): void => {
-  res.send('Hello World!');
+  // 既存の「Hello World!」表示は残し、各アプリへのリンクを追加
+  res.send('Hello World!<p><a href="/todo">TODO</a> | <a href="/todo-v2">TODO V2</a> | <a href="/ai">AIに質問する</a></p>');
 });
 
 // DB接続確認
@@ -53,6 +54,11 @@ app.get('/todo-v2', (_req: Request, res: Response): void => {
 
 // TODO API V2（/api/v2/todos）
 app.use('/api/v2/todos', todoV2Router);
+
+// AI質問画面（/ai）
+app.get(['/ai', '/ai/'], (_req: Request, res: Response): void => {
+  res.sendFile(path.join(process.cwd(), 'public', 'ai', 'index.html'));
+});
 
 // AI質問API（/api/ai）
 app.use('/api/ai', aiRouter);

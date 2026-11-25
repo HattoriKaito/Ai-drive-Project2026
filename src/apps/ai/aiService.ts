@@ -1,15 +1,55 @@
+import { GoogleGenAI } from '@google/genai';
 import { AiPublicError } from './aiError';
 
-// ------------------------------------------------------------
-// 【TASK-03 模擬回答】実AIへの通信は行わない。
-// TASK-04 でこのファイルの generateAnswer を Gemini API の呼出しに置き換える。
-// ------------------------------------------------------------
-export const MOCK_ANSWER = '接続確認用の模擬回答です。';
+// 参考設定（授業テキスト・設計書 DES-AI-008）
+const AI_TIMEOUT_MS = 30_000;   // 外部AIの待機 30秒
+const MAX_OUTPUT_TOKENS = 1024; // 出力予算
 
-export async function generateAnswer(_prompt: string): Promise<string> {
-  // 模擬回答はローカル検証中だけ。Vercel上では成功扱いにしない
-  if (process.env.VERCEL) {
+// Gemini API で回答を作る（サーバー側だけで実行。キーはブラウザへ渡さない）
+// 今回の質問だけを送り、過去の履歴は送らない
+export async function generateAnswer(prompt: string): Promise<string> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  const model = process.env.GEMINI_MODEL;
+  if (!apiKey || !model) {
     throw new AiPublicError('AI_NOT_CONFIGURED');
   }
-  return MOCK_ANSWER;
+
+  // SDKの再試行は既定で5回のため、attempts: 1（初回のみ）を明示する
+  const ai = new GoogleGenAI({
+    apiKey,
+    httpOptions: { timeout: AI_TIMEOUT_MS, retryOptions: { attempts: 1 } },
+  });
+
+  // SDKのtimeoutに加えて、AbortControllerでも30秒で打ち切る
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        maxOutputTokens: MAX_OUTPUT_TOKENS,
+        abortSignal: controller.signal,
+        httpOptions: { timeout: AI_TIMEOUT_MS, retryOptions: { attempts: 1 } },
+      },
+    });
+
+    const text = response.text;
+    // 空回答（安全フィルター等で本文なしを含む）は失敗とし、保存しない
+    if (typeof text !== 'string' || text.trim().length === 0) {
+      throw new AiPublicError('AI_UNAVAILABLE');
+    }
+    return text;
+  } catch (error) {
+    if (error instanceof AiPublicError) throw error;
+    const name = (error as { name?: unknown })?.name;
+    if (controller.signal.aborted || name === 'AbortError' || name === 'TimeoutError') {
+      throw new AiPublicError('AI_TIMEOUT', { cause: error });
+    }
+    // 通信エラー・利用枠超過・キー不正などは固定コードへ変換（生の例外は返さない）
+    throw new AiPublicError('AI_UNAVAILABLE', { cause: error });
+  } finally {
+    clearTimeout(timer);
+  }
 }
