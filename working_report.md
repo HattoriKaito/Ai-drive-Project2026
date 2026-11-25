@@ -1,7 +1,7 @@
 # AI質問アプリ 作業報告
 
 - 日付・学籍番号・氏名：2026-11-25 ／ 23a31g0014 ／ 服部魁人
-- 対象ブランチ／コミット／PR：feature/ai-app ／（PR 作成後に記入）
+- 対象ブランチ／コミット／PR：feature/ai-app ／ 209350b（main へのマージ 9921770）／ https://github.com/HattoriKaito/Ai-drive-Project2026/pull/3
 - 対象環境：Local（AI 有効）、Preview・Production（AI 停止）
 
 ## 要望から決めたこと
@@ -14,11 +14,10 @@
 - 正常系：実 AI で質問し、201・回答表示・DB 保存・再読込での履歴表示を確認（模擬回答での保存確認とは分けて記録）
 - 異常系：空白の直接送信は 400 で保存なし。AI の一時的な失敗（502）が実際に発生し、質問が残り、問い合わせ ID が表示され、手動の再送で成功した。オフライン送信、連打、HTML に見える質問の表示も確認
 - 秘密管理：public/ にキー・Gemini の URL がなく、.env は Git 管理外、キーはサーバーの aiService.ts だけで読んでいる
-- 既存機能：TOP・TODO・TODO V2 が動作。Preview で AI が 503 DEMO_DISABLED になり、TOP は動くことを確認
+- 既存機能：TOP・TODO・TODO V2 が動作。Preview・Production で AI が 503 DEMO_DISABLED になり、TOP・TODO は動くことを確認
 
 ## 未完成・未実施
 - 画面での履歴 0 件表示（REQ-AI-F005）：既存データを削除しないため未実施。API では 0 件の 200・空配列を確認済み。次は講師の指定する方法で空の環境を用意して確認する
-- Production での停止確認（REQ-AI-F010）：マージ後に /api/ai の 503 と TOP・TODO の動作を確認する
 
 ## 自分の言葉による説明
 - APIキーの場所：キーはサーバー（ローカルの .env）の環境変数だけにあり、ブラウザは自分の Express にしか通信しない。Gemini にキーを付けて送るのはサーバーなので、ブラウザのソースや通信にキーは出てこない

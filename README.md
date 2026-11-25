@@ -66,4 +66,4 @@ Neon の SQL Editor で sql/ai/030_create_ai_qa_logs.sql を実行します。
 - 認証がないため、AI を有効にした環境では画面を開ける人が誰でも質問でき、履歴も共有されます
 
 ### テスト
-docs/ai/test-results.md に記録しています。必須確認のうち、画面での履歴 0 件表示（既存データを削除しないため）と Production の停止確認（マージ後に実施）が未実施です。
+docs/ai/test-results.md に記録しています。必須確認のうち、画面での履歴 0 件表示（既存データを削除しないため）が未実施です。Production では AI が停止（503 DEMO_DISABLED）し、TOP・TODO が動くことを確認済みです。

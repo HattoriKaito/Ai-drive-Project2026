@@ -42,7 +42,7 @@
 | 環境 | URL | AI_DEMO_ENABLED | 確認 | 結果 | 判定 |
 | --- | --- | --- | --- | --- | --- |
 | Preview | https://ai-drive-project2026-qjttwneph-kaitos-projects-7f072cea.vercel.app | false（All Environments） | /api/ai/history、/ai、/ | history は 503 DEMO_DISABLED。/ai は「現在AI機能は停止中です。」と問い合わせ ID を表示し、質問欄・送信ボタンは無効。/ は Hello World! と各アプリへのリンク | 合格（停止を確認） |
-| Production | https://ai-drive-project2026-tau-ochre.vercel.app | false（All Environments） | マージ後に /api/ai/history、/api/ai/ask、/、/todo | 未実施 | 未実施 |
+| Production | https://ai-drive-project2026-tau-ochre.vercel.app | false（All Environments） | PR #3 を main にマージ後、/ai、/api/ai/history、/、/todo、/todo-v2 | /api/ai/history は 503 DEMO_DISABLED。/ai は停止中の表示で送信不可。/ は Hello World! と各アプリへのリンク、/todo・/todo-v2 は従来どおり | 合格（停止を確認） |
 
 - Vercel には GEMINI_API_KEY を登録していない（どの公開環境でも AI を実行しないため）
 - Preview はアクセス保護を外しているため、AI を有効にしない。AI の実行デモはローカルで行う
