@@ -18,3 +18,9 @@
 | T-V2-09 | 検証環境 | AI_DEMO_ENABLED 未設定で V2 の各 API | 全 API が 503 DEMO_DISABLED | GET・POST /conversations、GET /conversations/1/turns が 503 DEMO_DISABLED | 合格 |
 | T-V2-10 | Local・検証環境 | V1 の /ai・/api/ai/history、TOP、/todo、/todo-v2 | 従来どおり動く | すべて 200。TOP に V2 へのリンクを追加（Hello World! は維持） | 合格 |
 | T-V2-11 | ― | 21 往復以上の会話 | 最新 20 往復だけを古い順 | 未実施（SQL の `ORDER BY id DESC LIMIT 20` と古い順への並べ直しをコードで確認。Gemini を 21 回呼ぶ必要があるため実施していない） | 未実施 |
+
+## 公開環境
+
+| テストID | 対象環境 | 操作 | 期待結果 | 実測 | 判定 |
+| --- | --- | --- | --- | --- | --- |
+| T-V2-09P | Production（https://ai-drive-project2026-tau-ochre.vercel.app、PR #4 マージ後） | /api/ai/v2/conversations、/ai/v2、/ | V2 の API は 503 DEMO_DISABLED、画面は停止表示で操作不可、TOP は動く | API は 503 DEMO_DISABLED。/ai/v2 は「現在AI機能は停止中です。」と問い合わせ ID を表示し、会話の作成・送信ボタンが無効。会話一覧の取得失敗を 0 件表示にしない。TOP に V2 へのリンク | 合格 |
